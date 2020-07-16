@@ -62,15 +62,15 @@ async function setupArgoCDCommand(): Promise<(params: string) => Promise<ExecRes
 }
 
 async function getApps(): Promise<App[]> {
-  const url = `http://${ARGOCD_SERVER_URL}/api/v1/applications?fields=items.metadata.name,items.spec.source.path,items.spec.source.repoURL`;
-  core.info(`Fetching apps from: ${url}`);
+  const argo-url = `http://${ARGOCD_SERVER_URL}/api/v1/applications?fields=items.metadata.name,items.spec.source.path,items.spec.source.repoURL`;
+  core.info(`Fetching apps from: ${argo-url}`);
   const httpsAgent = new https.Agent({
       rejectUnauthorized: false,
     });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let responseJson: any;
   try {
-    const response = await nodeFetch(url, {
+    const response = await nodeFetch(argo-url, {
       method: 'GET',
       agent: httpsAgent,
       headers: { Cookie: `argocd.token=${ARGOCD_TOKEN}` }
