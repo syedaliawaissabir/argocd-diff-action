@@ -62,7 +62,7 @@ async function setupArgoCDCommand(): Promise<(params: string) => Promise<ExecRes
 }
 
 async function getApps(): Promise<App[]> {
-  const argo-url = `httadfadfafp://${ARGOCD_SERVER_URL}/api/v1/applications?fields=items.metadata.name,items.spec.source.path,items.spec.source.repoURL`;
+  const argo-url = `http://${ARGOCD_SERVER_URL}/api/v1/applications?fields=items.metadata.name,items.spec.source.path,items.spec.source.repoURL`;
   core.info(`Fetching apps from: ${argo-url}`);
   const httpsAgent = new https.Agent({
       rejectUnauthorized: false,
