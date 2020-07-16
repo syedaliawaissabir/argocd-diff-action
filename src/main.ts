@@ -95,7 +95,7 @@ async function postDiffComment(diffs: Diff[]): Promise<void> {
   const output = diffs
     .map(
       ({ appName, diff }) => `    
-ArgoCD Diff for [\`${appName}\`](https://${ARGOCD_SERVER_URL}/applications/${appName})        
+ArgoCD Diff for [\`${appName}\`](http://${ARGOCD_SERVER_URL}/applications/${appName})        
 <details>
 
 \`\`\`diff
