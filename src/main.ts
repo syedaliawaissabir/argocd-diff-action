@@ -23,6 +23,7 @@ core.info(githubToken);
 const ARGOCD_SERVER_URL = core.getInput('argocd-server-url');
 const ARGOCD_TOKEN = core.getInput('argocd-token');
 const VERSION = core.getInput('argocd-version');
+const EXTRA_CLI_ARGS = core.getInput('argocd-extra-cli-args');
 
 const octokit = github.getOctokit(githubToken);
 
@@ -56,23 +57,20 @@ async function setupArgoCDCommand(): Promise<(params: string) => Promise<ExecRes
 
   return async (params: string) =>
     execCommand(
-      `${argoBinaryPath} ${params} --grpc-web --auth-token=${ARGOCD_TOKEN} --server=${ARGOCD_SERVER_URL}`,
+      `${argoBinaryPath} ${params} --grpc-web --auth-token=${ARGOCD_TOKEN} --server=${ARGOCD_SERVER_URL} ${EXTRA_CLI_ARGS}`,
       2
     );
 }
 
 async function getApps(): Promise<App[]> {
-  const argo-url = `http://${ARGOCD_SERVER_URL}/api/v1/applications?fields=items.metadata.name,items.spec.source.path,items.spec.source.repoURL`;
-  core.info(`Fetching apps from: ${argo-url}`);
-  const httpsAgent = new https.Agent({
-      rejectUnauthorized: false,
-    });
+  const url = `http://${ARGOCD_SERVER_URL}/api/v1/applications?fields=items.metadata.name,items.spec.source.path,items.spec.source.repoURL`;
+  core.info(`URL: ${url}`);
+  core.info(`Fetching apps from: ${url}`);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let responseJson: any;
   try {
-    const response = await nodeFetch(argo-url, {
+    const response = await nodeFetch(url, {
       method: 'GET',
-      agent: httpsAgent,
       headers: { Cookie: `argocd.token=${ARGOCD_TOKEN}` }
     });
     responseJson = await response.json();
